@@ -1,15 +1,23 @@
 use ndarray_rand::rand::SeedableRng;
 use rand::rngs::SmallRng;
+use linfa_random_forest::{Forest, ForestInitData, Info};
 
-use linfa_random_forest::TestStruct;
 
 fn main() {
     println!("Main running...");
 
     // load Iris dataset
-    let mut rng = SmallRng::seed_from_u64(42);
+    let mut rng: SmallRng = SmallRng::seed_from_u64(42);
 
-    let (train, test) = linfa_datasets::iris()
+    let (_train, _test) = linfa_datasets::iris()
         .shuffle(&mut rng)
         .split_with_ratio(0.8);
+
+    let init_data= ForestInitData{
+        tree_nm: 20,
+    };
+
+    let forest = Forest::forest_two_test(&init_data);
+
+    forest.show_info();
 }
