@@ -3,6 +3,13 @@
 
 use linfa_trees::{DecisionTree, Result, SplitQuality, DecisionTreeParams};
 
+pub struct TreeParams{
+    split_quality: SplitQuality,
+    max_depth: usize,
+    min_weight_split: f32,
+    min_weight_leaf: f32,
+}
+
 pub struct ForestInitData{
     pub tree_nm: u64,
 } 
@@ -14,7 +21,7 @@ pub trait Info {
 #[derive(Debug)]
 pub struct ForestData{
     forest_name: String,
-    vector: Vec<DecisionTreeParams<f64, usize>>,
+    forest_vector: Vec<DecisionTreeParams<f64, usize>>,
 }
 
 #[derive(Debug)]
@@ -22,27 +29,31 @@ pub struct Forest(ForestData);
 
 impl Info for Forest {
     fn show_info(&self){
-        // println!("I'm in forestTwo!");
         println!("{:#?}", self);
     }
 }
 
 impl Forest{
     pub fn forest_two_test(forest_info: &ForestInitData) -> Self{
-        let mut values: Vec<DecisionTreeParams<f64, usize>> = Vec::new();
+        let mut temporary_forest_vector: Vec<DecisionTreeParams<f64, usize>> = Vec::new();
 
         for _ in 1..forest_info.tree_nm{
-            values.push(DecisionTree::<f64,usize>::params());
+            temporary_forest_vector.push(DecisionTree::<f64,usize>::params());
         }
 
         Self(ForestData{
             forest_name: String::from("Forest #1"),
-            vector: values,
+            forest_vector: temporary_forest_vector,
         })
     }
 
-    pub fn create_forest(&self) -> DecisionTreeParams<f64, usize> {
-        DecisionTree::<f64,usize>::params()
+    pub fn setup_trees(forest_vector: &ForestData, tree_params: &TreeParams){
+        for i in 0..forest_vector.forest_vector.len(){
+            forest_vector.forest_vector[i].split_quality(tree_params.split_quality);
+            forest_vector.forest_vector[i].max_depth(Some(tree_params.max_depth));
+            forest_vector.forest_vector[i].min_weight_split(tree_params.min_weight_split);
+            forest_vector.forest_vector[i].min_weight_leaf(tree_params.min_weight_leaf);
+        }
     }
 }
 
@@ -50,7 +61,7 @@ impl Forest{
 // 1. Init one tree
 // TODO:
 //  1. Get train data.
-//  2. Get number of trees in forest.
+//  2. Get number of trees in forest. OK
 //  3. Get max depth.
 //  4. Get all tree settings
 

@@ -1,6 +1,6 @@
 use ndarray_rand::rand::SeedableRng;
 use rand::rngs::SmallRng;
-use linfa_random_forest::{Forest, ForestInitData, Info};
+use linfa_random_forest::{Forest, ForestInitData, Info, TreeParams};
 
 
 fn main() {
@@ -18,6 +18,15 @@ fn main() {
     };
 
     let forest = Forest::forest_two_test(&init_data);
+
+    let non_default_params = TreeParams{
+        split_quality: Gini,
+        max_depth: 100,
+        min_weight_split: 1.0,
+        min_weight_leaf: 1.0,
+    };
+
+    forest.setup_trees(&forest, &non_default_params);
 
     forest.show_info();
 }
