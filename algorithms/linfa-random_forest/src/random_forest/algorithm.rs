@@ -4,10 +4,10 @@
 use linfa_trees::{DecisionTree, Result, SplitQuality, DecisionTreeParams};
 
 pub struct TreeParams{
-    split_quality: SplitQuality,
-    max_depth: usize,
-    min_weight_split: f32,
-    min_weight_leaf: f32,
+    pub split_quality: SplitQuality,
+    pub max_depth: usize,
+    pub min_weight_split: f32,
+    pub min_weight_leaf: f32,
 }
 
 pub struct ForestInitData{
@@ -34,7 +34,7 @@ impl Info for Forest {
 }
 
 impl Forest{
-    pub fn forest_two_test(forest_info: &ForestInitData) -> Self{
+    pub fn crete_default_forest(forest_info: &ForestInitData) -> Self{
         let mut temporary_forest_vector: Vec<DecisionTreeParams<f64, usize>> = Vec::new();
 
         for _ in 1..forest_info.tree_nm{
@@ -47,13 +47,14 @@ impl Forest{
         })
     }
 
-    pub fn setup_trees(forest_vector: &ForestData, tree_params: &TreeParams){
-        for i in 0..forest_vector.forest_vector.len(){
-            forest_vector.forest_vector[i].split_quality(tree_params.split_quality);
-            forest_vector.forest_vector[i].max_depth(Some(tree_params.max_depth));
-            forest_vector.forest_vector[i].min_weight_split(tree_params.min_weight_split);
-            forest_vector.forest_vector[i].min_weight_leaf(tree_params.min_weight_leaf);
+    pub fn setup_trees(self, tree_params: &TreeParams) -> Self{
+        for i in 0..self.0.forest_vector.len(){
+            self.0.forest_vector[i].split_quality(tree_params.split_quality);
+            self.0.forest_vector[i].max_depth(Some(tree_params.max_depth));
+            self.0.forest_vector[i].min_weight_split(tree_params.min_weight_split);
+            self.0.forest_vector[i].min_weight_leaf(tree_params.min_weight_leaf);
         }
+        self
     }
 }
 
