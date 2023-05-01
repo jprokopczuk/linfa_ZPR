@@ -1,7 +1,7 @@
 //! Random forest based on linear decision trees
 //!
 
-use linfa_trees::{DecisionTree, Result, SplitQuality, DecisionTreeParams};
+use linfa_trees::{DecisionTree, SplitQuality, DecisionTreeParams};
 
 pub struct TreeParams{
     pub split_quality: SplitQuality,
@@ -59,13 +59,10 @@ impl Forest{
 }
 
 
-// 1. Init one tree
-// TODO:
-//  1. Get train data.
-//  2. Get number of trees in forest. OK
-//  3. Get max depth.
-//  4. Get all tree settings
-
+//  1. Pass train data.
+//  2. Manage train data.
+//  2. Train trees.
+//  3. Get results.
 
 #[cfg(test)]
 mod tests {

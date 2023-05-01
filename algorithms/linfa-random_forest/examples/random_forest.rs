@@ -30,6 +30,7 @@ fn main() {
     // Get forest object
     let forest = Forest::crete_default_forest(&init_data)
     .setup_trees(&non_default_params);
+// .fit_in_forest(_train)
 
     // Print forest structure
     forest.show_info();
