@@ -1,7 +1,7 @@
 use ndarray_rand::rand::SeedableRng;
 use rand::rngs::SmallRng;
-use linfa_random_forest::{Forest, ForestInitData, Info};
-
+use linfa_random_forest::{Forest, ForestInitData, Info, TreeParams};
+use linfa_trees::{SplitQuality};
 
 fn main() {
     println!("Main running...");
@@ -13,11 +13,25 @@ fn main() {
         .shuffle(&mut rng)
         .split_with_ratio(0.8);
 
+
+    // Set tree settings
     let init_data= ForestInitData{
         tree_nm: 20,
     };
 
-    let forest = Forest::forest_two_test(&init_data);
+    // Set all trees params
+    let non_default_params = TreeParams{
+        split_quality: SplitQuality::Gini,
+        max_depth: 100,
+        min_weight_split: 1.0,
+        min_weight_leaf: 1.0,
+    };
 
+    // Get forest object
+    let forest = Forest::crete_default_forest(&init_data)
+    .setup_trees(&non_default_params);
+// .fit_in_forest(_train)
+
+    // Print forest structure
     forest.show_info();
 }
